@@ -1,0 +1,34 @@
+input CreateCommentInput {
+  postId: String!
+  userId: String!
+  name: String!
+  content: String!
+  createdAt: Float!
+}
+
+input UpdateCommentInput {
+  userId: String!
+  name: String
+  content: String
+  createdAt: Float!
+}
+
+type Comment @model {
+  postId: String! @aws_api_key @aws_cognito_user_pools
+  userId: String! @aws_api_key @aws_cognito_user_pools
+  name: String! @aws_api_key @aws_cognito_user_pools
+  content: String! @aws_api_key @aws_cognito_user_pools
+  createdAt: Float! @aws_api_key @aws_cognito_user_pools
+}
+
+type Mutation {
+  createComment(input: CreateCommentInput!): Comment @aws_cognito_user_pools
+  updateComment(input: UpdateCommentInput!): Comment @aws_cognito_user_pools
+  deleteComment(userId: String!, createdAt: Float!): Comment
+    @aws_cognito_user_pools
+}
+
+type Query {
+  getComments(postId: String, userId: String, createdAt: Float): [Comment]
+    @aws_api_key
+}
